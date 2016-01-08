@@ -23,7 +23,10 @@ export default class About extends Component {
 
     return (
       <div className="container">
-        <Test />
+        <h1>Traitify</h1>
+        <div className="assessment">
+          <Test />
+        </div>
       </div>
     );
   }
