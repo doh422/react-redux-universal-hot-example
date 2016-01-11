@@ -1,6 +1,11 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 
 export default class Test extends Component {
+
+	propTypes = {
+		assessmentId: PropTypes.string.isRequired,
+		
+	}
 
 	render() {
 		// const deckId = 'career_deck';

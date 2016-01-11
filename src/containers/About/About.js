@@ -25,7 +25,7 @@ export default class About extends Component {
       <div className="container">
         <h1>Traitify</h1>
         <div className="assessment">
-          <Test />
+          <Test assessmentId={this.props.assessmentId} />
         </div>
       </div>
     );
