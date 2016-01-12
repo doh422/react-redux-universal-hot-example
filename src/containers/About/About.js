@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { Test } from 'components';
 
 export default class About extends Component {
 
@@ -29,6 +28,7 @@ export default class About extends Component {
     return (
       <div className="container">
         <h1>Traitify Assessment</h1>
+        <button>Take Assessment</button>
         <div className="assessment"></div>
       </div>
     );
