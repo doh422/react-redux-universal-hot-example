@@ -29,7 +29,6 @@ export default class About extends Component {
     return (
       <div className="container">
         <h1>Traitify Assessment</h1>
-        <button>Take Assessment</button>
         <Test />
         <div className="assessment"></div>
       </div>

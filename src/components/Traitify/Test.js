@@ -31,7 +31,9 @@ export default class Test extends Component {
 
 	render() {
 		return (
-			<div>hello</div>
+			<div className="button">
+				<button>Take Assessment</button>
+			</div>
 		);
 	}
 }

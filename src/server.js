@@ -42,15 +42,17 @@ app.use('/api', (req, res) => {
 });
 
 // traitify api
-traitify.setHost('api-sandbox.traitify.com');
+traitify.setHost('https://api-sandbox.traitify.com');
 traitify.setVersion('v1');
 traitify.setSecretKey('hemohtsgsqg85ai75i1ki84244');
 var deckId = 'career-deck';
-app.get('/api/test', function(req, res) {
+app.get('/api/career', function(req, res) {
   traitify.createAssessment(deckId, function(assessment) {
+    console.log(deckId);
     res.send(assessment);
-  })
+  });
 });
+// traitify api
 
 
 // added the error handling to avoid https://github.com/nodejitsu/node-http-proxy/issues/527
