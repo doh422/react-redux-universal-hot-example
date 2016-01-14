@@ -6,19 +6,18 @@ export default function createStore(reduxReactRouter, getRoutes, createHistory, 
   const middleware = [createMiddleware(client), transitionMiddleware];
 
   let finalCreateStore;
-  if (__DEVELOPMENT__ && __CLIENT__ && __DEVTOOLS__) {
-    const { persistState } = require('redux-devtools');
-    const DevTools = require('../containers/DevTools/DevTools');
+  if (__CLIENT__ && window.devToolsExtension) {
     finalCreateStore = compose(
       applyMiddleware(...middleware),
-      window.devToolsExtension ? window.devToolsExtension() : DevTools.instrument(),
-      persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
+      window.devToolsExtension()
     )(_createStore);
   } else {
-    finalCreateStore = applyMiddleware(...middleware)(_createStore);
+    finalCreateStore = compose(
+      applyMiddleware(...middleware)
+    )(_createStore);
   }
 
-  finalCreateStore = reduxReactRouter({ getRoutes, createHistory })(finalCreateStore);
+  finalCreateStore = reduxReactRouter({getRoutes, createHistory})(finalCreateStore);
 
   const reducer = require('./modules/reducer');
   const store = finalCreateStore(reducer, data);

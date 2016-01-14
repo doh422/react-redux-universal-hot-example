@@ -1,3 +1,4 @@
+export createAssessment from './createAssessment';
 export loadInfo from './loadInfo';
 export loadAuth from './loadAuth';
 export login from './login';

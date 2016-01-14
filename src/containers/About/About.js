@@ -1,7 +1,25 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 // import { Test } from 'components';
+import {connect} from 'react-redux';
+import {createAssessment as createTraitifyAssessment} from '../../redux/modules/traitify';
 
+@connect(
+  state => ({
+    assessment: state.traitify.assessment,
+    createError: state.traitify.createError,
+    creating: state.traitify.creating
+  }),
+  {
+    createAssessment: createTraitifyAssessment
+  }
+)
 export default class About extends Component {
+  static propTypes = {
+    assessment: PropTypes.object,
+    createAssessment: PropTypes.func.isRequired,
+    createError: PropTypes.any,
+    creating: PropTypes.bool
+  }
 
   componentDidMount() {
     // http://facebook.github.io/react/docs/component-specs.html
@@ -14,25 +32,39 @@ export default class About extends Component {
     //    we don't have the Traitify API there.
     // B) The Traitify code is assuming that it will be able to find the element on the page, so it
     //    must be called after the component DID mount, not before it mounts in component WILL mount.
-
     Traitify.setPublicKey('a653qn1aosgiee1jv49haksgoc');
     Traitify.setHost('api-sandbox.traitify.com');
     Traitify.setVersion('v1');
+
+    const {assessment} = this.props;
+    if (typeof Traitify !== 'undefined' && assessment) {
+      Traitify.ui.load(assessment.id, '.assessment');
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const {assessment} = this.props;
+    if (typeof Traitify !== 'undefined' && assessment && !prevProps.assessment) {
+      // just got assessment id and put the <div> in the DOM
+      Traitify.ui.load(assessment.id, '.assessment');
+    }
   }
 
   render() {
-    // I moved the className="assessment" element out of Html.js, where it would show up on the
-    // footer of all pages, and into only the page where we want it.
-    const assessmentId = 'af4059d0-e6f2-4145-ba1f-b4f840781928';
-    function showAssessment() {
-      Traitify.ui.load(assessmentId, '.assessment');
-    }
-
+    const {assessment, createAssessment, createError, creating} = this.props;
     return (
       <div className="container">
         <h1>Traitify Assessment</h1>
-        <button onClick={showAssessment}>Take Assessment</button>
-        <div className="assessment"></div>
+        {!assessment && <button
+          className="btn btn-success"
+          onClick={event => {
+            event.preventDefault();
+            createAssessment('career-deck');
+          }}
+          disabled={creating}>Take Assessment</button>}
+        {creating && <div>Creating...</div>}
+        {createError && <div>{JSON.stringify(createError)}</div>}
+        {assessment && <div className="assessment"/>}
       </div>
     );
   }
