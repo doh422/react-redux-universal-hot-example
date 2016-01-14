@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+// import { Test } from 'components';
 
 export default class About extends Component {
 
@@ -14,20 +15,23 @@ export default class About extends Component {
     // B) The Traitify code is assuming that it will be able to find the element on the page, so it
     //    must be called after the component DID mount, not before it mounts in component WILL mount.
 
-    const assessmentId = 'a9ffbd96-ed29-4e7f-8dfb-fc6f867eb875';
     Traitify.setPublicKey('a653qn1aosgiee1jv49haksgoc');
     Traitify.setHost('api-sandbox.traitify.com');
     Traitify.setVersion('v1');
-    console.log(assessmentId);
-    Traitify.ui.load(assessmentId, '.assessment');
   }
 
   render() {
     // I moved the className="assessment" element out of Html.js, where it would show up on the
     // footer of all pages, and into only the page where we want it.
+    const assessmentId = 'af4059d0-e6f2-4145-ba1f-b4f840781928';
+    function showAssessment() {
+      Traitify.ui.load(assessmentId, '.assessment');
+    }
+
     return (
       <div className="container">
         <h1>Traitify Assessment</h1>
+        <button onClick={showAssessment}>Take Assessment</button>
         <div className="assessment"></div>
       </div>
     );
