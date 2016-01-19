@@ -1,4 +1,4 @@
-import traitify from '../traifity';
+import traitify from '../traitify';
 
 export default function getPersonalityTypes(req) {
 	const {body: {assessId}} = req;
