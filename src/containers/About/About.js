@@ -1,5 +1,4 @@
 import React, {Component, PropTypes} from 'react';
-// import { Test } from 'components';
 import {connect} from 'react-redux';
 import {createAssessment as createTraitifyAssessment} from '../../redux/modules/traitify';
 

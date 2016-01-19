@@ -2,6 +2,7 @@ const CREATE_ASSESSMENT = 'redux-example/traitify/CREATE_ASSESSMENT';
 const CREATE_ASSESSMENT_SUCCESS = 'redux-example/traitify/CREATE_ASSESSMENT_SUCCESS';
 const CREATE_ASSESSMENT_FAILURE = 'redux-example/traitify/CREATE_ASSESSMENT_FAILURE';
 
+// redux reducer function
 export default function reducer(state = {}, action = {}) {
   switch (action.type) {
     case CREATE_ASSESSMENT:
@@ -31,6 +32,16 @@ export function createAssessment(deck) {
     types: [CREATE_ASSESSMENT, CREATE_ASSESSMENT_SUCCESS, CREATE_ASSESSMENT_FAILURE],
     promise: (client) => client.post('/createAssessment', {
       data: {deck}
+    })
+  };
+}
+
+// get results action
+export function getPersonalityTypes(assessId) {
+  return {
+    // action types
+    promise: (client) => client.get('/getPersonalityTypes', {
+      data: {assessId}
     })
   };
 }
