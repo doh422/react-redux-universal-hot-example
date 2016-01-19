@@ -1,15 +1,21 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {createAssessment as createTraitifyAssessment} from '../../redux/modules/traitify';
+import {getPersonalityTypes as getTraitifyPersonalityTypes} from '../../redux/modules/traitify';
 
 @connect(
   state => ({
     assessment: state.traitify.assessment,
     createError: state.traitify.createError,
-    creating: state.traitify.creating
+    creating: state.traitify.creating,
+    // new states
+    saveError: state.traitify.saveError,
+    saving: state.traitify.saving
   }),
   {
-    createAssessment: createTraitifyAssessment
+    createAssessment: createTraitifyAssessment,
+    // new action
+    getPersonalityTypes: getTraitifyPersonalityTypes
   }
 )
 export default class About extends Component {
@@ -17,7 +23,11 @@ export default class About extends Component {
     assessment: PropTypes.object,
     createAssessment: PropTypes.func.isRequired,
     createError: PropTypes.any,
-    creating: PropTypes.bool
+    creating: PropTypes.bool,
+    // new props
+    getPersonalityTypes: PropTypes.func,
+    saveError: PropTypes.any,
+    saving: PropTypes.bool
   }
 
   componentDidMount() {
