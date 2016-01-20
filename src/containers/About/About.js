@@ -79,11 +79,7 @@ export default class About extends Component {
         {assessment && <div className="assessment"/>}
         {assessment && <button
           className="btn btn-danger"
-          onClick={event => {
-            event.preventDefault();
-            getPersonalityTypes(assessment.id);
-            console.log(assessment.id);
-          }}
+          onClick={getPersonalityTypes}
           disabled={saving}>Get Personality Types</button>}
         {saving && <div>Saving...</div>}
         {saveError && <div>{JSON.stringify(saveError)}</div>}
