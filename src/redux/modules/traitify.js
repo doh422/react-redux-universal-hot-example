@@ -61,7 +61,7 @@ export function createAssessment(deck) {
 // get results action
 export function getPersonalityTypes(assessId) {
   return {
-    // action types
+    // states
     types: [SAVE_RESULTS, SAVE_RESULTS_SUCCESS, SAVE_RESULTS_FAILURE],
     promise: (client) => client.get('/getPersonalityTypes', {
       data: {assessId}

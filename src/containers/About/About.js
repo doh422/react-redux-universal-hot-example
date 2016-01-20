@@ -45,6 +45,7 @@ export default class About extends Component {
     Traitify.setHost('api-sandbox.traitify.com');
     Traitify.setVersion('v1');
 
+    console.log('mounted');
     const {assessment} = this.props;
     if (typeof Traitify !== 'undefined' && assessment) {
       Traitify.ui.load(assessment.id, '.assessment');
@@ -52,15 +53,18 @@ export default class About extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    console.log('updated');
+    console.log(prevProps);
     const {assessment} = this.props;
     if (typeof Traitify !== 'undefined' && assessment && !prevProps.assessment) {
       // just got assessment id and put the <div> in the DOM
       Traitify.ui.load(assessment.id, '.assessment');
     }
+    console.log(assessment);
   }
 
   render() {
-    const {assessment, createAssessment, createError, creating} = this.props;
+    const {assessment, createAssessment, createError, creating, getPersonalityTypes, saveError, saving} = this.props;
     return (
       <div className="container">
         <h1>Traitify Assessment</h1>
@@ -74,6 +78,9 @@ export default class About extends Component {
         {creating && <div>Creating...</div>}
         {createError && <div>{JSON.stringify(createError)}</div>}
         {assessment && <div className="assessment"/>}
+        
+        {saving && <div>Saving...</div>}
+        {saveError && <div>{JSON.stringify(saveError)}</div>}
       </div>
     );
   }
