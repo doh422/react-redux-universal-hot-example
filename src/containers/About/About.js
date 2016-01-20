@@ -54,13 +54,12 @@ export default class About extends Component {
 
   componentDidUpdate(prevProps) {
     console.log('updated');
-    console.log(prevProps);
     const {assessment} = this.props;
     if (typeof Traitify !== 'undefined' && assessment && !prevProps.assessment) {
       // just got assessment id and put the <div> in the DOM
       Traitify.ui.load(assessment.id, '.assessment');
     }
-    console.log(assessment);
+    console.log(prevProps);
   }
 
   render() {
@@ -78,7 +77,14 @@ export default class About extends Component {
         {creating && <div>Creating...</div>}
         {createError && <div>{JSON.stringify(createError)}</div>}
         {assessment && <div className="assessment"/>}
-        
+        {assessment && <button
+          className="btn btn-danger"
+          onClick={event => {
+            event.preventDefault();
+            getPersonalityTypes(assessment.id);
+            console.log(assessment.id);
+          }}
+          disabled={saving}>Get Personality Types</button>}
         {saving && <div>Saving...</div>}
         {saveError && <div>{JSON.stringify(saveError)}</div>}
       </div>
