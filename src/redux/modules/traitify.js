@@ -36,7 +36,7 @@ export default function reducer(state = {}, action = {}) {
       return {
         ...state,
         saving: false,
-        assessment: action.result
+        results: action.result
       };
     case SAVE_RESULTS_FAILURE:
       return {
@@ -63,7 +63,7 @@ export function getPersonalityTypes(assessId) {
   return {
     // states
     types: [SAVE_RESULTS, SAVE_RESULTS_SUCCESS, SAVE_RESULTS_FAILURE],
-    promise: (client) => client.get('/getPersonalityTypes', {
+    promise: (client) => client.post('/getPersonalityTypes', {
       data: {assessId}
     })
   };

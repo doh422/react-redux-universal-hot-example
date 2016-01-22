@@ -10,7 +10,8 @@ import {getPersonalityTypes as getTraitifyPersonalityTypes} from '../../redux/mo
     creating: state.traitify.creating,
     // new states
     saveError: state.traitify.saveError,
-    saving: state.traitify.saving
+    saving: state.traitify.saving,
+    results: state.traitify.results
   }),
   {
     createAssessment: createTraitifyAssessment,
@@ -27,7 +28,8 @@ export default class About extends Component {
     // new props
     getPersonalityTypes: PropTypes.func,
     saveError: PropTypes.any,
-    saving: PropTypes.bool
+    saving: PropTypes.bool,
+    results: PropTypes.object
   }
 
   componentDidMount() {
@@ -55,15 +57,17 @@ export default class About extends Component {
   componentDidUpdate(prevProps) {
     console.log('updated');
     const {assessment} = this.props;
+    const {results} = this.props;
     if (typeof Traitify !== 'undefined' && assessment && !prevProps.assessment) {
       // just got assessment id and put the <div> in the DOM
       Traitify.ui.load(assessment.id, '.assessment');
     }
-    console.log(prevProps);
+    console.log(results);
+    console.log(assessment);
   }
 
   render() {
-    const {assessment, createAssessment, createError, creating, getPersonalityTypes, saveError, saving} = this.props;
+    const {assessment, createAssessment, createError, creating, getPersonalityTypes, saveError, saving, results} = this.props;
     return (
       <div className="container">
         <h1>Traitify Assessment</h1>
@@ -79,7 +83,11 @@ export default class About extends Component {
         {assessment && <div className="assessment"/>}
         {assessment && <button
           className="btn btn-danger"
-          onClick={getPersonalityTypes}
+          onClick={event => {
+            event.preventDefault();
+            getPersonalityTypes(String(assessment.id));
+            console.log(results);
+          }}
           disabled={saving}>Get Personality Types</button>}
         {saving && <div>Saving...</div>}
         {saveError && <div>{JSON.stringify(saveError)}</div>}
