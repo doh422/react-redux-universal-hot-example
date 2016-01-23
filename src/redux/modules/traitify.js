@@ -18,6 +18,7 @@ export default function reducer(state = {}, action = {}) {
       return {
         ...state,
         creating: false,
+        // assessment object gets saved into Redux store
         assessment: action.result
       };
     case CREATE_ASSESSMENT_FAILURE:
@@ -36,6 +37,7 @@ export default function reducer(state = {}, action = {}) {
       return {
         ...state,
         saving: false,
+        // results object gets saved into Redux store as result of getPersonalityTraits
         results: action.result
       };
     case SAVE_RESULTS_FAILURE:
@@ -58,7 +60,7 @@ export function createAssessment(deck) {
   };
 }
 
-// get results action
+// get results action creator
 export function getPersonalityTypes(assessId) {
   return {
     // states
