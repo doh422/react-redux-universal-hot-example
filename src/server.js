@@ -12,8 +12,10 @@ import Html from './helpers/Html';
 import PrettyError from 'pretty-error';
 import http from 'http';
 import SocketIo from 'socket.io';
-// traitify node api client
-import traitify from 'traitify';
+
+// enable sessions
+import bodyParser from 'body-parser';
+import session from 'express-session';
 
 import {ReduxRouter} from 'redux-router';
 import createHistory from 'history/lib/createMemoryHistory';
@@ -41,19 +43,18 @@ app.use('/api', (req, res) => {
   proxy.web(req, res);
 });
 
-// traitify api
-traitify.setHost('https://api-sandbox.traitify.com');
-traitify.setVersion('v1');
-traitify.setSecretKey('hemohtsgsqg85ai75i1ki84244');
-var deckId = 'career-deck';
-app.get('/api/career', function(req, res) {
-  traitify.createAssessment(deckId, function(assessment) {
-    console.log(deckId);
-    res.send(assessment);
-  });
-});
-// traitify api
+// sessions
+app.use(bodyParser.json());
+app.use(session({
+  secret: 'qwerty',
+  resave: false,
+  saveUninitialized: false
+}));
 
+app.get('/about', function(req, res) {
+  req.session.name = 'hello';
+  console.log(req.session.name);
+});
 
 // added the error handling to avoid https://github.com/nodejitsu/node-http-proxy/issues/527
 proxy.on('error', (error, req, res) => {
