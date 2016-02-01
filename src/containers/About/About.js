@@ -32,10 +32,22 @@ export default class About extends Component {
     saveError: PropTypes.any,
     saving: PropTypes.bool,
     results: PropTypes.object,
-    saveResults: PropTypes.func,
     // user props
     user: PropTypes.object
 
+  }
+
+  // check to see if test has been taken
+  componentWillMount() {
+    const {user} = this.props;
+    console.log(user);
+    if (!user.test_id) {
+      alert('please take assessment');
+    } else if (user.test_id && !user.results.complete) {
+      alert('please finish assessment');
+    } else if (user.test_id && user.results.complete) {
+      alert('congrats');
+    }
   }
 
   componentDidMount() {
@@ -75,7 +87,8 @@ export default class About extends Component {
     console.log(results);
     console.log(assessment);
     console.log(user);
-    if (results) {
+    if (results && results.personality_types.length > 0) {
+      user.results.complete = true;
       user.results.personalities = results.personality_blend;
       user.results.personality_types = results.personality_types;
     }

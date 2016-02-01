@@ -5,8 +5,9 @@ export default function login(req) {
     sess_id: req.session.id,
     test_id: null,
     results: {
-    	personalities: {},
-    	personality_types: []
+    	complete: false,
+			personalities: {},
+			personality_types: []
     }
   };
   req.session.user = user;
