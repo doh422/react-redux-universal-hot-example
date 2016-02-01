@@ -32,8 +32,10 @@ export default class About extends Component {
     saveError: PropTypes.any,
     saving: PropTypes.bool,
     results: PropTypes.object,
+    saveResults: PropTypes.func,
     // user props
     user: PropTypes.object
+
   }
 
   componentDidMount() {
@@ -53,9 +55,11 @@ export default class About extends Component {
 
     console.log('mounted');
     const {assessment} = this.props;
+    const {user} = this.props;
     if (typeof Traitify !== 'undefined' && assessment) {
       Traitify.ui.load(assessment.id, '.assessment');
     }
+    console.log(user);
   }
 
   componentDidUpdate(prevProps) {
@@ -66,14 +70,19 @@ export default class About extends Component {
     if (typeof Traitify !== 'undefined' && assessment && !prevProps.assessment) {
       // just got assessment id and put the <div> in the DOM
       Traitify.ui.load(assessment.id, '.assessment');
+      user.test_id = assessment.id;
     }
     console.log(results);
     console.log(assessment);
     console.log(user);
+    if (results) {
+      user.results.personalities = results.personality_blend;
+      user.results.personality_types = results.personality_types;
+    }
   }
 
   render() {
-    const {assessment, createAssessment, createError, creating, getPersonalityTypes, saveError, saving, results} = this.props;
+    const {assessment, createAssessment, createError, creating, getPersonalityTypes, saveError, saving} = this.props;
     return (
       <div className="container">
         <h1>Traitify Assessment</h1>
@@ -92,9 +101,8 @@ export default class About extends Component {
           onClick={event => {
             event.preventDefault();
             getPersonalityTypes(String(assessment.id));
-            console.log(results);
           }}
-          disabled={saving}>Get Personality Types</button>}
+          disabled={saving}>Save Results</button>}
         {saving && <div>Saving...</div>}
         {saveError && <div>{JSON.stringify(saveError)}</div>}
       </div>
