@@ -51,9 +51,9 @@ app.use(session({
   saveUninitialized: false
 }));
 
-app.get('/about', function(req, res) {
+app.get('/login', function(req, res) {
   req.session.name = 'hello';
-  console.log(req.session.name);
+  console.log(req.session.id);
 });
 
 // added the error handling to avoid https://github.com/nodejitsu/node-http-proxy/issues/527

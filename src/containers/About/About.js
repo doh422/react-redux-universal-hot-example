@@ -11,7 +11,9 @@ import {getPersonalityTypes as getTraitifyPersonalityTypes} from '../../redux/mo
     // new states
     saveError: state.traitify.saveError,
     saving: state.traitify.saving,
-    results: state.traitify.results
+    results: state.traitify.results,
+    // recognize user that logged in from Login
+    user: state.auth.user
   }),
   {
     createAssessment: createTraitifyAssessment,
@@ -29,7 +31,9 @@ export default class About extends Component {
     getPersonalityTypes: PropTypes.func,
     saveError: PropTypes.any,
     saving: PropTypes.bool,
-    results: PropTypes.object
+    results: PropTypes.object,
+    // user props
+    user: PropTypes.object
   }
 
   componentDidMount() {
@@ -58,12 +62,14 @@ export default class About extends Component {
     console.log('updated');
     const {assessment} = this.props;
     const {results} = this.props;
+    const {user} = this.props;
     if (typeof Traitify !== 'undefined' && assessment && !prevProps.assessment) {
       // just got assessment id and put the <div> in the DOM
       Traitify.ui.load(assessment.id, '.assessment');
     }
     console.log(results);
     console.log(assessment);
+    console.log(user);
   }
 
   render() {
