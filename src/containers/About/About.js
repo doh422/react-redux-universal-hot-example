@@ -41,7 +41,9 @@ export default class About extends Component {
   componentWillMount() {
     const {user} = this.props;
     console.log(user);
-    if (!user.test_id) {
+    if (!user) {
+      alert('please login');
+    } else if (user && !user.test_id) {
       alert('please take assessment');
     } else if (user.test_id && !user.results.complete) {
       alert('please finish assessment');
@@ -68,8 +70,14 @@ export default class About extends Component {
     console.log('mounted');
     const {assessment} = this.props;
     const {user} = this.props;
+    const {getPersonalityTypes} = this.props;
     if (typeof Traitify !== 'undefined' && assessment) {
-      Traitify.ui.load(assessment.id, '.assessment');
+      const showSlides = Traitify.ui.load('slideDeck', assessment.id, '.slide-deck', {slideDeck: {showResults: false}});
+      showSlides.onFinished(function() {
+        alert('finished test');
+        getPersonalityTypes(String(assessment.id));
+        user.test_id = assessment.id;
+      });
     }
     console.log(user);
   }
@@ -79,10 +87,15 @@ export default class About extends Component {
     const {assessment} = this.props;
     const {results} = this.props;
     const {user} = this.props;
+    const {getPersonalityTypes} = this.props;
     if (typeof Traitify !== 'undefined' && assessment && !prevProps.assessment) {
       // just got assessment id and put the <div> in the DOM
-      Traitify.ui.load(assessment.id, '.assessment');
-      user.test_id = assessment.id;
+      const showSlides = Traitify.ui.load('slideDeck', assessment.id, '.slide-deck', {slideDeck: {showResults: false}});
+      showSlides.onFinished(function() {
+        alert('finished test');
+        getPersonalityTypes(String(assessment.id));
+        user.test_id = assessment.id;
+      });
     }
     console.log(results);
     console.log(assessment);
@@ -108,7 +121,7 @@ export default class About extends Component {
           disabled={creating}>Take Assessment</button>}
         {creating && <div>Creating...</div>}
         {createError && <div>{JSON.stringify(createError)}</div>}
-        {assessment && <div className="assessment"/>}
+        {assessment && <div className="slide-deck"/>}
         {assessment && <button
           className="btn btn-danger"
           onClick={event => {
