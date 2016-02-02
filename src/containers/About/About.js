@@ -70,16 +70,14 @@ export default class About extends Component {
     console.log('mounted');
     const {assessment} = this.props;
     const {user} = this.props;
-    const {getPersonalityTypes} = this.props;
+    // const {getPersonalityTypes} = this.props;
     if (typeof Traitify !== 'undefined' && assessment) {
       const showSlides = Traitify.ui.load('slideDeck', assessment.id, '.slide-deck', {slideDeck: {showResults: false}});
-      showSlides.onFinished(function() {
-        alert('finished test');
-        getPersonalityTypes(String(assessment.id));
+      showSlides.onInitialize(function() {
         user.test_id = assessment.id;
+        console.log(user);
       });
     }
-    console.log(user);
   }
 
   componentDidUpdate(prevProps) {
@@ -91,24 +89,33 @@ export default class About extends Component {
     if (typeof Traitify !== 'undefined' && assessment && !prevProps.assessment) {
       // just got assessment id and put the <div> in the DOM
       const showSlides = Traitify.ui.load('slideDeck', assessment.id, '.slide-deck', {slideDeck: {showResults: false}});
+      showSlides.onInitialize(function() {
+        user.test_id = assessment.id;
+        console.log(user);
+      });
       showSlides.onFinished(function() {
         alert('finished test');
+        // results retrieved and saved to store
         getPersonalityTypes(String(assessment.id));
         user.test_id = assessment.id;
+        console.log(assessment);
       });
     }
-    console.log(results);
-    console.log(assessment);
-    console.log(user);
-    if (results && results.personality_types.length > 0) {
-      user.results.complete = true;
-      user.results.personalities = results.personality_blend;
-      user.results.personality_types = results.personality_types;
+    if (results && results.personality_blend.name) {
+    // show results
+      const showResults = Traitify.ui.load('results', assessment.id, '.result-deck');
+      showResults.onInitialize(function() {
+        user.results.complete = true;
+        user.results.personalities = results.personality_blend;
+        user.results.personality_types = results.personality_types;
+        console.log(user);
+        console.log(results);
+      });
     }
   }
 
   render() {
-    const {assessment, createAssessment, createError, creating, getPersonalityTypes, saveError, saving} = this.props;
+    const {assessment, createAssessment, createError, creating, saveError, saving} = this.props;
     return (
       <div className="container">
         <h1>Traitify Assessment</h1>
@@ -122,13 +129,7 @@ export default class About extends Component {
         {creating && <div>Creating...</div>}
         {createError && <div>{JSON.stringify(createError)}</div>}
         {assessment && <div className="slide-deck"/>}
-        {assessment && <button
-          className="btn btn-danger"
-          onClick={event => {
-            event.preventDefault();
-            getPersonalityTypes(String(assessment.id));
-          }}
-          disabled={saving}>Save Results</button>}
+        <div className="result-deck"></div>
         {saving && <div>Saving...</div>}
         {saveError && <div>{JSON.stringify(saveError)}</div>}
       </div>
