@@ -33,8 +33,7 @@ export default class About extends Component {
     saving: PropTypes.bool,
     results: PropTypes.object,
     // user props
-    user: PropTypes.object
-
+    user: PropTypes.object,
   }
 
   // check to see if test has been taken
@@ -71,12 +70,15 @@ export default class About extends Component {
     const {assessment} = this.props;
     const {user} = this.props;
     // const {getPersonalityTypes} = this.props;
-    if (typeof Traitify !== 'undefined' && assessment) {
+    if (typeof Traitify !== 'undefined' && assessment && !user.results.complete) {
       const showSlides = Traitify.ui.load('slideDeck', assessment.id, '.slide-deck', {slideDeck: {showResults: false}});
       showSlides.onInitialize(function() {
         user.test_id = assessment.id;
         console.log(user);
       });
+    }
+    if (user.results.complete) {
+      Traitify.ui.load('results', assessment.id, '.result-deck');
     }
   }
 
@@ -130,6 +132,7 @@ export default class About extends Component {
         {createError && <div>{JSON.stringify(createError)}</div>}
         {assessment && <div className="slide-deck"/>}
         <div className="result-deck"></div>
+        {user.results.complete && <button>Retake Assessment</button>}
         {saving && <div>Saving...</div>}
         {saveError && <div>{JSON.stringify(saveError)}</div>}
       </div>
