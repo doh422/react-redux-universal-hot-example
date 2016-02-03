@@ -98,12 +98,8 @@ export default class About extends Component {
         console.log(user);
       });
       showSlides.onFinished(function() {
-        alert('finished test');
         // results retrieved and saved to store
         getPersonalityTypes(String(assessment.id));
-        // console.log(assessment);
-        // console.log(user);
-        // console.log(results);
         user.results.complete = true;
 
       });
@@ -116,14 +112,12 @@ export default class About extends Component {
       showResults.onInitialize(function() {
         user.results.personalities = results.personality_blend;
         user.results.personality_types = results.personality_types;
-        // console.log(user);
-        // console.log(results);
       });
     }
   }
 
   render() {
-    const {assessment, createAssessment, createError, creating, saveError, saving, user} = this.props;
+    const {assessment, createAssessment, createError, creating, saveError, saving, user, results} = this.props;
     return (
       <div className="container">
         <h1>Traitify Assessment</h1>
@@ -137,9 +131,9 @@ export default class About extends Component {
         {creating && <div>Creating...</div>}
         {createError && <div>{JSON.stringify(createError)}</div>}
         {assessment && <div className="slide-deck"/>}
-        <div className="result-deck"></div>
-        <div className="personality-types"></div>
-        <div className="personality-traits"></div>
+        {results && <div className="result-deck"></div>}
+        {results && <div className="personality-types"></div>}
+        {results && <div className="personality-traits"></div>}
         {user.results.complete && <button>Retake Assessment</button>}
         {saving && <div>Saving...</div>}
         {saveError && <div>{JSON.stringify(saveError)}</div>}
